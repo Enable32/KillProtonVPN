@@ -2,6 +2,7 @@ package com.killprotonvpn;
 
 import android.content.ComponentName;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -24,6 +25,9 @@ public class MainActivity extends AppCompatActivity {
         intent.setComponent(new ComponentName("ch.protonvpn.android", "ch.protonvpn.android.RoutingActivity"));
         startActivity(intent);
 
+        // Завершение приложения
+        finishAndRemoveTask();
+        android.os.Process.killProcess(android.os.Process.myPid());
         System.exit(0);
     }
 
@@ -35,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
             // Пишем команды в поток процесса
             process.getOutputStream().write("am force-stop ch.protonvpn.android\n".getBytes());
             process.getOutputStream().write("pm clear ch.protonvpn.android\n".getBytes());
-            // process.getOutputStream().write("am start -n ch.protonvpn.android/ch.protonvpn.android.RoutingActivity".getBytes());
+            //process.getOutputStream().write("am start -n ch.protonvpn.android/ch.protonvpn.android.RoutingActivity".getBytes());
             process.getOutputStream().flush();
             process.getOutputStream().close();
 
@@ -44,6 +48,4 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
-
 }
